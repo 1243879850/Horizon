@@ -7,8 +7,8 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 6.0,
-    "time_window_hours": 48,
+    "ai_score_threshold": 6.5,
+    "time_window_hours": 24,
     "scoring_prompt": "ROLE: High-density analyst. ALL responses in Chinese. ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: If a numeric value is unverifiable, label it as ⚠️ 数据缺口. [H2] UNCERTAINTY LABELS: Explicitly use ⚠️ 数据缺口 or ⚠️ 未验证 — 请确认 for doubtful points. [H3] INFO TIER LABELING: Pure facts → state clearly; Inferences → MUST start with '我的判断：'. 语气要求: 尖锐、理性、数据驱动。最后，必须按标准的 JSON 格式输出评分和分析结果。"
   },
   "notifications": {
@@ -18,17 +18,33 @@
   },
   "sources": {
     "rss": [
-      {"name": "FT财富雷达", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
-      {"name": "Product Hunt-AI", "url": "https://www.producthunt.com/feed", "enabled": true},
-      {"name": "V2EX-创投深挖", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true},
-      {"name": "Indie Hackers-出海", "url": "https://www.indiehackers.com/rss", "enabled": true},
-      {"name": "36Kr-深度", "url": "https://36kr.com/feed", "enabled": true},
-      {"name": "WSJ-科技", "url": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "enabled": true}
+      { "name": "FT-全球金融", "url": "http://www.ftchinese.com/rss/feed", "enabled": true },
+      { "name": "WSJ-科技头条", "url": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "enabled": true },
+      { "name": "Reuters-商业新闻", "url": "https://www.reutersagency.com/feed/?best-topics=business&post_type=best", "enabled": true },
+      { "name": "The Economist-世界", "url": "https://www.economist.com/the-world-this-week/rss.xml", "enabled": true },
+      
+      { "name": "Product Hunt-新品", "url": "https://www.producthunt.com/feed", "enabled": true },
+      { "name": "V2EX-创投深挖", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true },
+      { "name": "Indie Hackers-出海", "url": "https://www.indiehackers.com/rss", "enabled": true },
+      { "name": "Hacker News-每日精选", "url": "https://feeds.feedburner.com/hackernews/best", "enabled": true },
+      
+      { "name": "TechCrunch-初创", "url": "https://techcrunch.com/feed/", "enabled": true },
+      { "name": "Wired-前沿技术", "url": "https://www.wired.com/feed/rss", "enabled": true },
+      { "name": "The Verge-消费电子", "url": "https://www.theverge.com/rss/index.xml", "enabled": true },
+      { "name": "MIT-技术评论", "url": "https://www.technologyreview.com/feed/", "enabled": true },
+      
+      { "name": "OpenAI-官方日志", "url": "https://openai.com/news/rss.xml", "enabled": true },
+      { "name": "Anthropic-新闻", "url": "https://www.anthropic.com/news/feed", "enabled": true },
+      { "name": "Google AI-动态", "url": "https://blog.google/technology/ai/rss/", "enabled": true },
+      
+      { "name": "36Kr-深度资讯", "url": "https://36kr.com/feed", "enabled": true },
+      { "name": "IT之家-科技动态", "url": "https://www.ithome.com/rss/", "enabled": true },
+      { "name": "财新网-经济", "url": "https://www.caixin.com/rss/index.xml", "enabled": true }
     ],
     "hackernews": {
       "enabled": true,
       "fetch_top_stories": 30,
-      "min_score": 100
+      "min_score": 150
     }
   }
 }
