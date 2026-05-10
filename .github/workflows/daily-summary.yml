@@ -13,21 +13,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔑 钥匙检测
+      - name: 🔑 OpenAI 钥匙检测
         env:
-          TEST_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TEST_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: |
           if [ -z "$TEST_KEY" ]; then
-            echo "❌ 警告：GitHub 没拿到 ANTHROPIC_API_KEY！"
+            echo "❌ 警告：GitHub 没拿到 OPENAI_API_KEY，请检查 Secrets 设置！"
             exit 1
           else
-            echo "✅ 成功：已识别到钥匙，长度为 ${#TEST_KEY} 个字符。"
+            echo "✅ 成功：已识别到 OpenAI 钥匙，长度为 ${#TEST_KEY} 个字符。"
           fi
 
-      - name: 🌐 网络连通性测试
+      - name: 🌐 网络连通性测试 (OpenAI)
         run: |
-          echo "正在测试是否能连接到 Anthropic 服务器..."
-          curl -I https://api.anthropic.com/v1/messages && echo "✅ 网络连接正常" || echo "❌ 无法访问服务器"
+          echo "正在测试是否能连接到 OpenAI 服务器..."
+          curl -I https://api.openai.com/v1/models && echo "✅ 网络连接正常" || echo "❌ 无法访问 OpenAI 服务器"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,6 +42,20 @@ jobs:
 
       - name: Run Horizon
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # 核心修改：这里必须叫 OPENAI_API_KEY，才能和你的 config.json 对应上
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: uv run horizon --hours 48
+
+      - name: Set current date as environment variable
+        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docs
+          keep_files: true
+          commit_message: "📝 Daily Summary: ${{ env.DATE }}"
+          publish_branch: gh-pages
+          enable_jekyll: true
