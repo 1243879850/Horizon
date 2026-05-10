@@ -2,7 +2,7 @@
   "version": "1.0",
   "ai": {
     "provider": "openai",
-    "model": "gpt-5.5-instant",
+    "model": "gpt-5.4-nano",
     "api_key_env": "OPENAI_API_KEY",
     "languages": [
       "zh",
@@ -10,9 +10,9 @@
     ]
   },
   "filtering": {
-    "ai_score_threshold": 7.0,
+    "ai_score_threshold": 1.0,
     "time_window_hours": 24,
-    "scoring_prompt": "ROLE: High-density analyst. Output language = Chinese (ALL responses, regardless of input language). Override allowed only if user explicitly requests non-Chinese for current task.\n\n═══ PRIORITY CHAIN (non-negotiable) ═══\nTop-Priority > Domain Prompt > Universal > Output Standards.\nDomain overrides Universal only via explicit written clause. Top-Priority never overridable.\n\n═══ 🔒 HARD RULES ═══\n\n[H1] NO FABRICATION\nUnverifiable numeric → ⚠️ 数据缺口.\nBANNED hedges (never substitute for missing numbers):\nEN: approximately, roughly, typically, generally, broadly speaking\nZH: 大约, 大致, 约为, 通常, 一般而言, 大体上, 差不多\nEXCEPTION: if a high-authority primary source itself uses an estimation term, reproduce it verbatim with the source’s estimation context — do not strip or replace.\n\n[H2] UNCERTAINTY LABELS (mutually exclusive, no mixing)\n⚠️ 数据缺口 → numeric unverifiable\n⚠️ 未验证 — 请确认 → non-numeric unverifiable\n⚠️ 内部冲突 → two data/inferences contradict\n⚠️ 搜索结果质量不足 → only stale(>6mo) or low-tier sources\n⚠️ 来源完整度难以裁定 → same-tier conflict unarbitrable\n⚠️ 局部数据缺失 - 降级分析 → partial data missing but core logic chain intact\n\n[H3] INFO TIER LABELING\nFact → state + cite\nInference → paragraph-head 我的判断：\nProjection → 预测 or 条件预测\n\n═══ EXECUTION RULES ═══\n\n[E1] DIRECT. No boilerplate, no AI-limitation disclaimers, no duplicated risk summaries, no generic compliance phrases.\n\n[E2] STRUCTURE. Match format to task type: single factual Q → 1–3 sentences. Multi-point analysis → bullets for facts, tables for comparisons. Long-form → prose with Markdown headers. Code tasks → code block first.\n\n[E3] AMBIGUITY. Material → ask 1 question first. Non-material → proceed + state assumption inline.\n\n[E5] NO EXTRAPOLATION beyond data. E5 interface activates only when user explicitly declares [执行情景预测] in input.\n\n[E6] CONFLICT. Any contradiction → ⚠️ 内部冲突 + describe. No silent resolution.\n\n═══ SOURCE HIERARCHY ═══\nCross-tier: primary/authoritative > curated secondary > general media > social.\n\n═══ TONE ═══\nSharp, rational, data-driven. No emotional language. No excessive hedging.\n\n任务：请根据上述高密度分析规则，对爬取到的新闻/网页内容进行严苛审查与评分（0-10）。重点关注 AI 变现、SaaS、独立开发、全球金融及宏观数据。分值 7.0 以上的新闻必须具备极高的数据密度或确凿的变现逻辑。"
+    "scoring_prompt": "ROLE: High-density analyst. Output language = Chinese (ALL responses). ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: Unverifiable numeric → ⚠️ 数据缺口. BANNED hedges: 大约, 大致, 约为, 通常, 一般而言, 差不多. [H2] UNCERTAINTY LABELS: ⚠️ 数据缺口, ⚠️ 未验证 — 请确认, ⚠️ 内部冲突, ⚠️ 来源完整度难以裁定. [H3] INFO TIER LABELING: Fact → state + cite; Inference → paragraph-head 我的判断：; Projection → 预测. ═══ EXECUTION RULES ═══ [E1] DIRECT. No boilerplate. [E2] STRUCTURE: facts in bullets, inference in prose with Markdown headers. [E5] NO EXTRAPOLATION beyond data. [E6] CONFLICT: Any contradiction → ⚠️ 内部冲突. ═══ TONE ═══ Sharp, rational, data-driven.\n\n任务：请根据上述规则对爬取内容进行严苛审查与评分（0-10）。重点关注 AI 变现、SaaS、独立开发盈利案例、全球金融及宏观数据。最后，请务必按照系统要求的 JSON 格式输出结果。"
   },
   "notifications": {
     "telegram": {
@@ -29,64 +29,18 @@
         "enabled": true
       },
       {
-        "name": "Yahoo Finance (美股/全球金融前沿)",
-        "url": "https://finance.yahoo.com/news/rss",
-        "enabled": true
-      },
-      {
         "name": "Product Hunt (全球最新 AI 产品/商业化灵感)",
         "url": "https://www.producthunt.com/feed",
-        "enabled": true
-      },
-      {
-        "name": "Starter Story (海外独立开发者/创业者真实盈利案例)",
-        "url": "https://www.starterstory.com/rss.xml",
-        "enabled": true
-      },
-      {
-        "name": "Indie Hackers (全球最大独立开发者搞钱社区)",
-        "url": "https://www.indiehackers.com/rss",
         "enabled": true
       },
       {
         "name": "V2EX 创投 (国内搞钱与副业)",
         "url": "https://www.v2ex.com/feed/create.xml",
         "enabled": true
-      },
-      {
-        "name": "Reddit SaaS (海外软件变现 - 代理源)",
-        "url": "https://rsshub.app/reddit/subreddit/SaaS",
-        "enabled": true
-      },
-      {
-        "name": "Reddit SideProject (海外副业 - 代理源)",
-        "url": "https://rsshub.app/reddit/subreddit/SideProject",
-        "enabled": true
       }
     ],
-    "reddit": {
-      "enabled": false,
-      "subreddits": [
-        {
-          "subreddit": "SaaS",
-          "enabled": true,
-          "sort": "hot",
-          "time_filter": "day",
-          "fetch_limit": 15
-        },
-        {
-          "subreddit": "SideProject",
-          "enabled": true,
-          "sort": "hot",
-          "time_filter": "day",
-          "fetch_limit": 15
-        }
-      ]
-    },
     "hackernews": {
-      "enabled": true,
-      "fetch_top_stories": 30,
-      "min_score": 50
+      "enabled": false
     }
   }
 }
