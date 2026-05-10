@@ -7,22 +7,22 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 1.0, 
+    "ai_score_threshold": 5.0, 
     "max_items_to_notify": 3,
     "time_window_hours": 48,
     "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. 语气: 尖锐、数据驱动。最后必须按 JSON 格式输出结果。"
   },
-  "notifications": {
+  "notification": {
     "telegram": {
       "enabled": true,
       "bot_token_env": "TELEGRAM_BOT_TOKEN",
-      "chat_id": "473268206"
+      "chat_id": 473268206
     }
   },
   "sources": {
     "rss": [
-      {"name": "测试源_FT", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
-      {"name": "测试源_V2EX", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true}
+      {"name": "Final_Test_FT", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
+      {"name": "Final_Test_V2EX", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true}
     ]
   }
 }
