@@ -7,9 +7,10 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 8.5,
-    "time_window_hours": 24,
-    "scoring_prompt": "ROLE: High-density analyst. ALL responses in Chinese. ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: Unverifiable numeric → ⚠️ 数据缺口. [H3] INFO TIER LABELING: Fact → state; Inference → paragraph-head 我的判断：. 语气: 尖锐、理性、数据驱动。最后，务必按 JSON 格式输出结果。"
+    "ai_score_threshold": 1.0, 
+    "max_items_to_notify": 3,
+    "time_window_hours": 48,
+    "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. 语气: 尖锐、数据驱动。最后必须按 JSON 格式输出结果。"
   },
   "notifications": {
     "telegram": {
@@ -20,15 +21,8 @@
   },
   "sources": {
     "rss": [
-      {"name": "FT财富雷达", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
-      {"name": "V2EX深挖", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true},
-      {"name": "PH新品榜", "url": "https://www.producthunt.com/feed", "enabled": true},
-      {"name": "雅虎财经精选", "url": "https://finance.yahoo.com/news/rss", "enabled": true}
-    ],
-    "hackernews": {
-      "enabled": true,
-      "fetch_top_stories": 30,
-      "min_score": 50
-    }
+      {"name": "测试源_FT", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
+      {"name": "测试源_V2EX", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true}
+    ]
   }
 }
