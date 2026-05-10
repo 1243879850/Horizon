@@ -2,7 +2,7 @@
   "version": "1.0",
   "ai": {
     "provider": "anthropic",
-    "model": "claude-4-6-sonnet",
+    "model": "claude-3-5-sonnet-20241022",
     "api_key_env": "ANTHROPIC_API_KEY",
     "languages": [
       "zh",
