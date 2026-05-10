@@ -1,153 +1,89 @@
 {
   "version": "1.0",
   "ai": {
-    "provider": "openai",
-    "model": "deepseek-v4-flash",
-    "base_url": "https://api.deepseek.com",
-    "api_key_env": "OPENAI_API_KEY",
-    "temperature": 0.3,
-    "max_tokens": 8192,
+    "provider": "anthropic",
+    "model": "claude-4-6-sonnet",
+    "api_key_env": "ANTHROPIC_API_KEY",
     "languages": [
       "zh",
       "en"
     ]
   },
+  "filtering": {
+    "ai_score_threshold": 7.0,
+    "time_window_hours": 24,
+    "scoring_prompt": "你是一个专业的商业投资与创业顾问。请审查以下新闻，并针对我的兴趣给出0-10的评分。请重点关注并给予高分（7分以上）：1. 结合 AI 技术的变现思路、SaaS 产品发布、独立开发者盈利案例、搞钱副业。 2. 重要的全球金融市场新闻、宏观经济动向、美股/A股异动、财报发布。 对于纯技术代码探讨、日常闲聊或无关的科技八卦，请给予低分（4分以下）。"
+  },
   "sources": {
-    "github": [
-      {
-        "type": "user_events",
-        "username": "karpathy",
-        "enabled": true
-      },
-      {
-        "type": "repo_releases",
-        "owner": "vllm-project",
-        "repo": "vllm",
-        "enabled": true
-      },
-      {
-        "type": "repo_releases",
-        "owner": "sgl-project",
-        "repo": "sglang",
-        "enabled": true
-      },
-      {
-        "type": "repo_releases",
-        "owner": "triton-lang",
-        "repo": "triton",
-        "enabled": true
-      }
-    ],
-    "hackernews": {
-      "enabled": true,
-      "fetch_top_stories": 30,
-      "min_score": 150
-    },
     "rss": [
       {
-        "name": "Simon Willison",
-        "url": "https://simonwillison.net/atom/everything/",
-        "enabled": true,
-        "category": "ai-tools"
+        "name": "FT中文网 (高质量金融/宏观)",
+        "url": "http://www.ftchinese.com/rss/feed",
+        "enabled": true
       },
       {
-        "name": "GitHub Trending - Daily",
-        "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
-        "enabled": true,
-        "category": "github-trending"
+        "name": "Yahoo Finance (美股/全球金融前沿)",
+        "url": "https://finance.yahoo.com/news/rss",
+        "enabled": true
       },
       {
-        "name": "LWN.net",
-        "url": "https://lwn.net/headlines/full_text?key=${LWN_KEY}",
-        "enabled": true,
-        "category": "linux-kernel"
+        "name": "Product Hunt (全球最新 AI 产品/商业化灵感)",
+        "url": "https://www.producthunt.com/feed",
+        "enabled": true
+      },
+      {
+        "name": "Starter Story (海外独立开发者/创业者真实盈利案例)",
+        "url": "https://www.starterstory.com/rss.xml",
+        "enabled": true
+      },
+      {
+        "name": "Indie Hackers (全球最大独立开发者搞钱社区)",
+        "url": "https://www.indiehackers.com/rss",
+        "enabled": true
+      },
+      {
+        "name": "V2EX 创投 (国内开发者的搞钱与副业交流)",
+        "url": "https://www.v2ex.com/feed/create.xml",
+        "enabled": true
       }
     ],
     "reddit": {
       "enabled": true,
       "subreddits": [
         {
-          "subreddit": "MachineLearning",
+          "subreddit": "SaaS",
           "enabled": true,
           "sort": "hot",
           "time_filter": "day",
-          "fetch_limit": 15,
-          "min_score": 60
+          "fetch_limit": 15
         },
         {
-          "subreddit": "LocalLLaMA",
+          "subreddit": "SideProject",
           "enabled": true,
           "sort": "hot",
           "time_filter": "day",
-          "fetch_limit": 15,
-          "min_score": 60
-        }
-      ],
-      "users": [],
-      "fetch_comments": 10
-    },
-    "telegram": {
-      "enabled": true,
-      "channels": [
+          "fetch_limit": 15
+        },
         {
-          "channel": "zaihuapd",
+          "subreddit": "Entrepreneur",
           "enabled": true,
-          "fetch_limit": 20
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15
+        },
+        {
+          "subreddit": "investing",
+          "enabled": true,
+          "sort": "hot",
+          "time_filter": "day",
+          "fetch_limit": 15
         }
       ]
     },
-    "twitter": {
+    "hackernews": {
       "enabled": true,
-      "users": [
-        "karpathy",
-        "roifex"
-      ],
-      "fetch_limit": 10,
-      "fetch_reply_text": false,
-      "max_replies_per_tweet": 3,
-      "max_tweets_to_expand": 10,
-      "reply_min_likes": 5
+      "fetch_top_stories": 30,
+      "min_score": 50
     }
-  },
-  "filtering": {
-    "ai_score_threshold": 8.0,
-    "time_window_hours": 24
-  },
-  "webhook": {
-    "enabled": true,
-    "url_env": "HORIZON_WEBHOOK_URL",
-    "delivery": "summary_and_items",
-    "overview_position": "last",
-    "platform": "feishu",
-    "layout": "collapsible",
-    "fallback_layout": "markdown",
-    "languages": [
-      "zh"
-    ],
-    "request_body": {
-      "msg_type": "interactive",
-      "card": {
-        "schema": "2.0",
-        "config": {
-          "wide_screen_mode": true
-        },
-        "header": {
-          "title": {
-            "tag": "plain_text",
-            "content": "#{message_title}"
-          },
-          "template": "blue"
-        },
-        "body": {
-          "elements": [
-            {
-              "tag": "markdown",
-              "content": "#{summary}"
-            }
-          ]
-        }
-      }
-    },
-    "headers": ""
   }
 }
