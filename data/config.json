@@ -7,22 +7,30 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 5.0, 
-    "max_items_to_notify": 3,
+    "ai_score_threshold": 6.0,
     "time_window_hours": 48,
-    "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. 语气: 尖锐、数据驱动。最后必须按 JSON 格式输出结果。"
+    "scoring_prompt": "ROLE: 顶级商业分析师。输出语言：中文。任务：从海量新闻中筛选具有‘变现潜力’、‘技术突破’或‘宏观趋势’的内容。评分标准：1-10分。8分以上：足以改变行业认知的重大突破。6分以上：值得关注的商业动态。要求：[H1] 严禁虚构数据。[H2] 事实与推论分离，推论部分必须以‘我的判断：’开头。[H3] 风格：理性、辛辣、高密度。"
   },
   "notifications": {
     "telegram": {
-      "enabled": true,
-      "bot_token_env": "TELEGRAM_BOT_TOKEN",
-      "chat_id": 473268206
+      "enabled": false
     }
   },
   "sources": {
     "rss": [
-      {"name": "ReTest_FT", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
-      {"name": "ReTest_V2EX", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true}
-    ]
+      {"name": "FT中文网-金融/宏观", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
+      {"name": "Product Hunt-AI/新产品", "url": "https://www.producthunt.com/feed", "enabled": true},
+      {"name": "V2EX-创投/副业", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true},
+      {"name": "Indie Hackers-出海变现", "url": "https://www.indiehackers.com/rss", "enabled": true},
+      {"name": "36Kr-核心资讯", "url": "https://36kr.com/feed", "enabled": true},
+      {"name": "WSJ-华尔街日报", "url": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "enabled": true},
+      {"name": "Wired-前沿技术", "url": "https://www.wired.com/feed/rss", "enabled": true},
+      {"name": "TechCrunch-初创公司", "url": "https://techcrunch.com/feed/", "enabled": true}
+    ],
+    "hackernews": {
+      "enabled": true,
+      "fetch_top_stories": 30,
+      "min_score": 100
+    }
   }
 }
