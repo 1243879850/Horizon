@@ -7,9 +7,9 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 8.0,
+    "ai_score_threshold": 8.8, 
     "time_window_hours": 24,
-    "scoring_prompt": "ROLE: High-density analyst. Output language = Chinese (ALL responses). ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: Unverifiable numeric → ⚠️ 数据缺口. BANNED hedges: 大约, 大致, 约为, 通常, 一般而言, 差不多. [H2] UNCERTAINTY LABELS: ⚠️ 数据缺口, ⚠️ 未验证 — 请确认, ⚠️ 内部冲突, ⚠️ 来源完整度难以裁定. [H3] INFO TIER LABELING: Fact → state + cite; Inference → paragraph-head 我的判断：; Projection → 预测 or 条件预测. ═══ EXECUTION RULES ═══ [E1] DIRECT. No boilerplate. [E2] STRUCTURE: facts in bullets, inference in prose with Markdown headers. [E5] NO EXTRAPOLATION. [E6] CONFLICT: Any contradiction → ⚠️ 内部冲突. ═══ TONE ═══ Sharp, rational, data-driven.\n\n任务：请根据上述规则对爬取内容进行严苛审查与评分（0-10）。重点关注 AI 变现、SaaS、独立开发盈利案例、全球金融及宏观数据。最后，请务必按照系统要求的 JSON 格式输出结果。"
+    "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. [H2] UNCERTAINTY LABELS. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. 语气: 尖锐、理性、数据驱动。最后，必须按 JSON 格式输出。"
   },
   "notifications": {
     "telegram": {
@@ -20,14 +20,11 @@
   },
   "sources": {
     "rss": [
-      {"name": "FT中文网 (金融/宏观)", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
-      {"name": "Yahoo Finance (全球金融)", "url": "https://finance.yahoo.com/news/rss", "enabled": true},
-      {"name": "Product Hunt (AI产品)", "url": "https://www.producthunt.com/feed", "enabled": true},
-      {"name": "Starter Story (盈利案例)", "url": "https://www.starterstory.com/rss.xml", "enabled": true},
-      {"name": "Indie Hackers (搞钱社区)", "url": "https://www.indiehackers.com/rss", "enabled": true},
-      {"name": "V2EX 创投 (国内副业)", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true},
-      {"name": "Reddit SaaS (海外变现)", "url": "https://rsshub.app/reddit/subreddit/SaaS", "enabled": true},
-      {"name": "Reddit SideProject (海外副业)", "url": "https://rsshub.app/reddit/subreddit/SideProject", "enabled": true}
+      {"name": "FT中文网", "url": "http://www.ftchinese.com/rss/feed", "enabled": true},
+      {"name": "V2EX 创投", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true},
+      {"name": "Product Hunt", "url": "https://www.producthunt.com/feed", "enabled": true},
+      {"name": "Yahoo Finance", "url": "https://finance.yahoo.com/news/rss", "enabled": true},
+      {"name": "Indie Hackers", "url": "https://www.indiehackers.com/rss", "enabled": true}
     ],
     "hackernews": {
       "enabled": true,
