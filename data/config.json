@@ -15,7 +15,7 @@
     "telegram": {
       "enabled": true,
       "bot_token_env": "TELEGRAM_BOT_TOKEN",
-      "chat_id": "473268206"
+      "chat_id": 473268206
     }
   },
   "sources": {
