@@ -42,13 +42,23 @@
         "enabled": true
       },
       {
-        "name": "V2EX 创投 (国内开发者的搞钱与副业交流)",
+        "name": "V2EX 创投 (国内搞钱与副业)",
         "url": "https://www.v2ex.com/feed/create.xml",
+        "enabled": true
+      },
+      {
+        "name": "Reddit SaaS (海外软件变现 - 代理源)",
+        "url": "https://rsshub.app/reddit/subreddit/SaaS",
+        "enabled": true
+      },
+      {
+        "name": "Reddit SideProject (海外副业 - 代理源)",
+        "url": "https://rsshub.app/reddit/subreddit/SideProject",
         "enabled": true
       }
     ],
     "reddit": {
-      "enabled": true,
+      "enabled": false,
       "subreddits": [
         {
           "subreddit": "SaaS",
@@ -59,13 +69,6 @@
         },
         {
           "subreddit": "SideProject",
-          "enabled": true,
-          "sort": "hot",
-          "time_filter": "day",
-          "fetch_limit": 15
-        },
-        {
-          "subreddit": "Entrepreneur",
           "enabled": true,
           "sort": "hot",
           "time_filter": "day",
