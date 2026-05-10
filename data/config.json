@@ -2,7 +2,7 @@
   "version": "1.0",
   "ai": {
     "provider": "openai",
-    "model": "gpt-4o",
+    "model": "gpt-5.5-instant",
     "api_key_env": "OPENAI_API_KEY",
     "languages": [
       "zh",
