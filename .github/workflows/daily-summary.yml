@@ -26,8 +26,9 @@ jobs:
 
       - name: Run Horizon
         env:
-          # 这里是给 Claude 开门的唯一指定钥匙
+          # 这里是给 AI 和 Telegram 开门的唯一授权，必须两行都有
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: uv run horizon --hours 48
 
       - name: Set current date as environment variable
@@ -38,7 +39,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          keep_files: true  
+          keep_files: true
           commit_message: "📝 Daily Summary: ${{ env.DATE }}"
           publish_branch: gh-pages
           enable_jekyll: true
