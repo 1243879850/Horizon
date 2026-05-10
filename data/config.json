@@ -2,7 +2,7 @@
   "version": "1.0",
   "ai": {
     "provider": "openai",
-    "model": "gpt-4o-mini",
+    "model": "gpt-5.4-nano",
     "api_key_env": "OPENAI_API_KEY",
     "languages": ["zh", "en"]
   },
