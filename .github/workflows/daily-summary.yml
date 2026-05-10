@@ -1,7 +1,7 @@
-name: Global Information Aggregator (Manual Only)
+name: Global Information Aggregator (Manual-4o-mini)
 
 on:
-  workflow_dispatch: # 核心：完全手动触发
+  workflow_dispatch:
 
 jobs:
   summary:
@@ -22,7 +22,7 @@ jobs:
       - name: Install Dependencies
         run: uv sync
 
-      - name: Run Horizon (GPT-5.4 Nano Power)
+      - name: Run Horizon (GPT-4o-mini Stable)
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: uv run horizon --hours 48
@@ -37,5 +37,5 @@ jobs:
           publish_dir: ./docs
           publish_branch: gh-pages
           keep_files: true
-          commit_message: "📝 20-Source 全量情报更新: ${{ env.DATE }}"
+          commit_message: "📝 4o-mini 全量情报更新: ${{ env.DATE }}"
           enable_jekyll: true
