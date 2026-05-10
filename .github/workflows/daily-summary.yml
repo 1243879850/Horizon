@@ -1,7 +1,9 @@
 name: Daily Horizon Summary
 
 on:
-  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *' # 每天凌晨自动运行（UTC时间）
+  workflow_dispatch: # 允许你手动点击按钮测试
 
 jobs:
   daily-summary:
@@ -13,21 +15,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: 🔑 OpenAI 钥匙检测
+      - name: 🔑 钥匙检测 (OpenAI & Telegram)
         env:
-          TEST_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OA_KEY: ${{ secrets.OPENAI_API_KEY }}
+          TG_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         run: |
-          if [ -z "$TEST_KEY" ]; then
-            echo "❌ 警告：GitHub 没拿到 OPENAI_API_KEY，请检查 Secrets 设置！"
+          if [ -z "$OA_KEY" ]; then
+            echo "❌ 警告：未检测到 OPENAI_API_KEY"
             exit 1
           else
-            echo "✅ 成功：已识别到 OpenAI 钥匙，长度为 ${#TEST_KEY} 个字符。"
+            echo "✅ OpenAI 钥匙就绪 (长度: ${#OA_KEY})"
+          fi
+          
+          if [ -z "$TG_TOKEN" ]; then
+            echo "❌ 警告：未检测到 TELEGRAM_BOT_TOKEN，手机将无法收到消息"
+            exit 1
+          else
+            echo "✅ Telegram 钥匙就绪 (长度: ${#TG_TOKEN})"
           fi
 
-      - name: 🌐 网络连通性测试 (OpenAI)
+      - name: 🌐 网络连通性测试
         run: |
-          echo "正在测试是否能连接到 OpenAI 服务器..."
-          curl -I https://api.openai.com/v1/models && echo "✅ 网络连接正常" || echo "❌ 无法访问 OpenAI 服务器"
+          echo "正在测试网络..."
+          curl -I https://api.openai.com/v1/models && echo "✅ OpenAI 连通" || echo "❌ OpenAI 不连通"
+          curl -I https://api.telegram.org && echo "✅ Telegram 连通" || echo "❌ Telegram 不连通"
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,12 +53,12 @@ jobs:
 
       - name: Run Horizon
         env:
-          # 核心修改：这里必须叫 OPENAI_API_KEY，才能和你的 config.json 对应上
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+        # --hours 48 确保能抓到近两天的内容，防止漏掉
         run: uv run horizon --hours 48
 
-      - name: Set current date as environment variable
+      - name: Set current date
         run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Deploy to GitHub Pages
