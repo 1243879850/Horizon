@@ -4,12 +4,12 @@
     "provider": "openai",
     "model": "gpt-5.4-nano",
     "api_key_env": "OPENAI_API_KEY",
-    "languages": ["zh", "en"]
+    "languages": ["zh"]
   },
   "filtering": {
-    "ai_score_threshold": 6.5,
-    "time_window_hours": 24,
-    "scoring_prompt": "ROLE: High-density analyst. ALL responses in Chinese. ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: If a numeric value is unverifiable, label it as ⚠️ 数据缺口. [H2] UNCERTAINTY LABELS: Explicitly use ⚠️ 数据缺口 or ⚠️ 未验证 — 请确认 for doubtful points. [H3] INFO TIER LABELING: Pure facts → state clearly; Inferences → MUST start with '我的判断：'. 语气要求: 尖锐、理性、数据驱动。最后，必须按标准的 JSON 格式输出评分和分析结果。"
+    "ai_score_threshold": 5.5,
+    "time_window_hours": 48,
+    "scoring_prompt": "ROLE: High-density analyst. Output language = Chinese (ALL responses, regardless of input language). Override allowed only if user explicitly requests non-Chinese for current task.\n\n═══ PRIORITY CHAIN (non-negotiable) ═══\nTop-Priority > Domain Prompt > Universal > Output Standards.\nDomain overrides Universal only via explicit written clause. Top-Priority never overridable.\n\n═══ 🔒 HARD RULES ═══\n\n[H1] NO FABRICATION\nUnverifiable numeric → ⚠️ 数据缺口.\nBANNED hedges (never substitute for missing numbers):\nEN: approximately, roughly, typically, generally, broadly speaking\nZH: 大约, 大致, 约为, 通常, 一般而言, 大体上, 差不多\nEXCEPTION: if a high-authority primary source itself uses an estimation term, reproduce it verbatim.\nUser request for “rough estimate” does NOT override.\nFor interval data, output raw boundary values (e.g., 15.2%-17.8%) and prohibit averaging or median conversion.\n\n[H2] UNCERTAINTY LABELS (mutually exclusive, no mixing)\n⚠️ 数据缺口 → numeric unverifiable\n⚠️ 未验证 — 请确认 → non-numeric unverifiable\n⚠️ 内部冲突 → two data/inferences contradict\n⚠️ 搜索结果质量不足 → only stale(>6mo) or low-tier sources\n⚠️ 来源完整度难以裁定 → same-tier conflict unarbitrable\n⚠️ 局部数据缺失 - 降级分析 → partial data missing but core logic chain intact.\n\n[H3] INFO TIER LABELING\nFact → state + cite\nInference → paragraph-head 我的判断： (once per inference block)\nProjection → 预测 or 条件预测\nFacts MUST NOT be laundered under 我的判断：.\n\n═══ EXECUTION RULES ═══\n\n[E1] DIRECT. No boilerplate, no AI-limitation disclaimers, no generic compliance phrases.\n\n[E2] STRUCTURE. Match format to task type: single factual Q → 1–3 sentences. Multi-point analysis → bullets for facts, tables for comparisons. Long-form writing → prose with Markdown headers.\n\n[E3] AMBIGUITY. Material → ask 1 question first. Non-material → proceed + state assumption inline.\n\n[E4] DOCUMENT BOUNDARY. Not in doc → 文档中未涉及此内容.\n\n[E5] NO EXTRAPOLATION beyond data. Activates only when user explicitly declares [执行情景预测].\n\n[E6] CONFLICT. Any contradiction → ⚠️ 内部冲突 + describe. No silent resolution.\n\n[E7] TOOL OUTPUT NORMALIZATION. Search tool results inherit E1–E6 and H1–H3.\n\n[E8] NO DOMAIN PROMPT DEFAULT. When no Domain Prompt is loaded: classify task per [E2]; match response depth to question complexity; do not assume specialized context; do not extend beyond the literal question — if extension has value, append a single line “延伸：[topic]” without expanding unless asked.\n\n═══ TONE ═══\nSharp, rational, data-driven. No emotional language.\n\n═══ OUTPUT REQUIREMENT (CRITICAL) ═══\nOutput must strictly follow the JSON format: {\"score\": <number>, \"analysis\": \"<your_analysis_using_H1_H3_rules>\"}. Do not include any text outside this JSON structure."
   },
   "notifications": {
     "telegram": {
@@ -18,33 +18,22 @@
   },
   "sources": {
     "rss": [
-      { "name": "FT-全球金融", "url": "http://www.ftchinese.com/rss/feed", "enabled": true },
-      { "name": "WSJ-科技头条", "url": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "enabled": true },
-      { "name": "Reuters-商业新闻", "url": "https://www.reutersagency.com/feed/?best-topics=business&post_type=best", "enabled": true },
+      { "name": "FT-全球金融深度", "url": "http://www.ftchinese.com/rss/feed", "enabled": true },
+      { "name": "WSJ-科技商业", "url": "https://feeds.a.dj.com/rss/RSSWSJD.xml", "enabled": true },
       { "name": "The Economist-世界", "url": "https://www.economist.com/the-world-this-week/rss.xml", "enabled": true },
-      
-      { "name": "Product Hunt-新品", "url": "https://www.producthunt.com/feed", "enabled": true },
-      { "name": "V2EX-创投深挖", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true },
-      { "name": "Indie Hackers-出海", "url": "https://www.indiehackers.com/rss", "enabled": true },
-      { "name": "Hacker News-每日精选", "url": "https://feeds.feedburner.com/hackernews/best", "enabled": true },
-      
-      { "name": "TechCrunch-初创", "url": "https://techcrunch.com/feed/", "enabled": true },
-      { "name": "Wired-前沿技术", "url": "https://www.wired.com/feed/rss", "enabled": true },
-      { "name": "The Verge-消费电子", "url": "https://www.theverge.com/rss/index.xml", "enabled": true },
-      { "name": "MIT-技术评论", "url": "https://www.technologyreview.com/feed/", "enabled": true },
-      
-      { "name": "OpenAI-官方日志", "url": "https://openai.com/news/rss.xml", "enabled": true },
-      { "name": "Anthropic-新闻", "url": "https://www.anthropic.com/news/feed", "enabled": true },
-      { "name": "Google AI-动态", "url": "https://blog.google/technology/ai/rss/", "enabled": true },
-      
-      { "name": "36Kr-深度资讯", "url": "https://36kr.com/feed", "enabled": true },
-      { "name": "IT之家-科技动态", "url": "https://www.ithome.com/rss/", "enabled": true },
-      { "name": "财新网-经济", "url": "https://www.caixin.com/rss/index.xml", "enabled": true }
+      { "name": "Reuters-商业精选", "url": "https://www.reutersagency.com/feed/?best-topics=business&post_type=best", "enabled": true },
+      { "name": "Product Hunt-趋势", "url": "https://www.producthunt.com/feed", "enabled": true },
+      { "name": "V2EX-创投/副业", "url": "https://www.v2ex.com/feed/create.xml", "enabled": true },
+      { "name": "Indie Hackers-变现", "url": "https://www.indiehackers.com/rss", "enabled": true },
+      { "name": "Hacker News-精华", "url": "https://feeds.feedburner.com/hackernews/best", "enabled": true },
+      { "name": "36Kr-核心资讯", "url": "https://36kr.com/feed", "enabled": true },
+      { "name": "IT之家-科技速递", "url": "https://www.ithome.com/rss/", "enabled": true },
+      { "name": "财新网-深度经济", "url": "https://www.caixin.com/rss/index.xml", "enabled": true }
     ],
     "hackernews": {
       "enabled": true,
       "fetch_top_stories": 30,
-      "min_score": 150
+      "min_score": 120
     }
   }
 }
