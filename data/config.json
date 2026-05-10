@@ -2,17 +2,14 @@
   "version": "1.0",
   "ai": {
     "provider": "openai",
-    "model": "gpt-5.4-nano",
+    "model": "gpt-4o-mini",
     "api_key_env": "OPENAI_API_KEY",
-    "languages": [
-      "zh",
-      "en"
-    ]
+    "languages": ["zh", "en"]
   },
   "filtering": {
     "ai_score_threshold": 1.0,
     "time_window_hours": 24,
-    "scoring_prompt": "ROLE: High-density analyst. Output language = Chinese (ALL responses). ═══ 🔒 HARD RULES ═══ [H1] NO FABRICATION: Unverifiable numeric → ⚠️ 数据缺口. BANNED hedges: 大约, 大致, 约为, 通常, 一般而言, 差不多. [H2] UNCERTAINTY LABELS: ⚠️ 数据缺口, ⚠️ 未验证 — 请确认, ⚠️ 内部冲突, ⚠️ 来源完整度难以裁定. [H3] INFO TIER LABELING: Fact → state + cite; Inference → paragraph-head 我的判断：; Projection → 预测. ═══ EXECUTION RULES ═══ [E1] DIRECT. No boilerplate. [E2] STRUCTURE: facts in bullets, inference in prose with Markdown headers. [E5] NO EXTRAPOLATION beyond data. [E6] CONFLICT: Any contradiction → ⚠️ 内部冲突. ═══ TONE ═══ Sharp, rational, data-driven.\n\n任务：请根据上述规则对爬取内容进行严苛审查与评分（0-10）。重点关注 AI 变现、SaaS、独立开发盈利案例、全球金融及宏观数据。最后，请务必按照系统要求的 JSON 格式输出结果。"
+    "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. Unverifiable numeric -> ⚠️ 数据缺口. BANNED: 大约, 通常. [H2] UNCERTAINTY: ⚠️ 未验证. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. EXECUTION: 1. Scoring (0-10): Focus AI/SaaS/IndieBiz/Finance. Content with data/numbers > 7. Chat/No data < 3. 2. Structure: Facts in bullets, inference in prose. 任务：严苛审查内容并评分。最后，必须按照系统要求的 JSON 格式输出。"
   },
   "notifications": {
     "telegram": {
@@ -24,23 +21,15 @@
   "sources": {
     "rss": [
       {
-        "name": "FT中文网 (高质量金融/宏观)",
+        "name": "FT中文网",
         "url": "http://www.ftchinese.com/rss/feed",
         "enabled": true
       },
       {
-        "name": "Product Hunt (全球最新 AI 产品/商业化灵感)",
-        "url": "https://www.producthunt.com/feed",
-        "enabled": true
-      },
-      {
-        "name": "V2EX 创投 (国内搞钱与副业)",
+        "name": "V2EX 创投",
         "url": "https://www.v2ex.com/feed/create.xml",
         "enabled": true
       }
-    ],
-    "hackernews": {
-      "enabled": false
-    }
+    ]
   }
 }
