@@ -7,7 +7,7 @@
     "languages": ["zh", "en"]
   },
   "filtering": {
-    "ai_score_threshold": 8.8, 
+    "ai_score_threshold": 8.0, 
     "time_window_hours": 24,
     "scoring_prompt": "ROLE: High-density analyst. ALL Chinese. RULES: [H1] NO FABRICATION. [H2] UNCERTAINTY LABELS. [H3] INFO TIER: Fact -> state; Inference -> 我的判断：. 语气: 尖锐、理性、数据驱动。最后，必须按 JSON 格式输出。"
   },
